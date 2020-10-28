@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.samart.mybatis.mapper.PrivilegeMapper">
+    <resultMap id="BaseResultMap" type="com.samart.mybatis.entity.Privilege">
+        <id property="privilegeId" column="privilege_id" /> <!-- 权限id -->
+        <result property="name" column="name" />            <!-- 权限name -->
+        <result property="dec" column="dec" />              <!-- 权限说明 -->
+        <result property="isDel" column="is_del" />         <!-- 权限状态是否删除 -->
+    </resultMap>
+
+</mapper>

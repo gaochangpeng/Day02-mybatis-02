@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!-- namespace 映射到该接口的全路径名 -->
+<mapper namespace="com.samart.mybatis.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.samart.mybatis.entity.Order"> <!-- type 映射的是该实体类的全路径 -->
+        <id column="order_id" property="orderId"></id>
+        <result column="order_no" property="orderNo"></result>
+        <result column="status" property="status"></result>
+        <result column="create_date" property="createDate"></result>
+        <result column="user_id" property="userId"></result>
+        <!-- 一对一 -->
+        <!-- 一对多 -->
+    </resultMap>
+
+    <resultMap id="AssociationResultMap" type="com.samart.mybatis.entity.Order" extends="BaseResultMap"> <!-- type 映射的是实体类路径 -->
+        <!-- association：声明 一对一 的关系-->
+        <association property="user" resultMap="com.samart.mybatis.mapper.UserMapper.BaseResultMap" /> <!-- resultMap 映射的是关联表的id -->
+    </resultMap>
+    <resultMap id="CollectionResultMap" type="com.samart.mybatis.entity.Order" extends="BaseResultMap">
+        <!-- collection：声明 一对多 的关系 -->
+        <!-- <result column="no" property="orderNo" /> -->
+        <collection property="orderItems" resultMap="com.samart.mybatis.mapper.OrderItemMapper.BaseResultMap" />
+    </resultMap>
+
+    <!-- 一对一 -->
+    <select id="selectOrderByNo" resultMap="AssociationResultMap">
+        select *
+        from t_order o left join user u on o.user_id = u.user_id
+        where order_no = #{orderNo}
+    </select>
+    
+    <!-- 一对多 -->
+    <select id="selectOrderByUserId" resultMap="CollectionResultMap">
+        <!-- 当使用别名时 select o.order_id, o.order_no as no, oi.item_id, oi.product_name 上面映射中column值修改为别名 -->
+        select *
+        from t_order o left join order_item oi on o.order_id = oi.order_id
+        where o.user_id = #{userId}
+    </select>
+
+</mapper>
